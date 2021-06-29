@@ -36,6 +36,7 @@ public class RevertReasonExtractor {
      */
     public static String extractRevertReason(
             TransactionReceipt transactionReceipt,
+            BigInteger weiValue,
             String data,
             Web3j web3j,
             Boolean revertReasonCallEnabled)
@@ -44,7 +45,7 @@ public class RevertReasonExtractor {
         if (transactionReceipt.getRevertReason() != null) {
             return transactionReceipt.getRevertReason();
         } else if (revertReasonCallEnabled) {
-            String revertReason = retrieveRevertReason(transactionReceipt, data, web3j);
+            String revertReason = retrieveRevertReason(transactionReceipt, weiValue, data, web3j);
             if (revertReason != null) {
                 transactionReceipt.setRevertReason(revertReason);
                 return revertReason;
@@ -63,7 +64,7 @@ public class RevertReasonExtractor {
      * @throws IOException if the call to the node fails
      */
     public static String retrieveRevertReason(
-            TransactionReceipt transactionReceipt, String data, Web3j web3j) throws IOException {
+            TransactionReceipt transactionReceipt, BigInteger weiValue, String data, Web3j web3j) throws IOException {
 
         if (transactionReceipt.getBlockNumber() == null) {
             return null;
